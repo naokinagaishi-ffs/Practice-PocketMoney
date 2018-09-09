@@ -2,6 +2,11 @@
 #ifndef RUNNER_H
 #define RUNNER_H
 
+#include "Worker.h"
+#include "FFGWorker.h"
+#include <iostream>
+using namespace std;
+
 //RuunerƒNƒ‰ƒX‚ÌéŒ¾
 class Runner
 {
@@ -12,6 +17,7 @@ public:
 	//ˆ—‚ÌÀs
 	void Run();
 	
+	void Show(const Worker* worker);
 
 };
 #endif // !RUNNER_H

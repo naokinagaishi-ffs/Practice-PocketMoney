@@ -13,12 +13,13 @@ Runner::~Runner() {  }
 
 void Runner::Run()
 {
-	Worker* pW;
-
 	FFGWorker a("abc","122");
 
-	pW = &a;
+	Runner::Show(&a);
+	
+}
 
-	a.Show();
-	//printf(a.GetName);
+void Runner::Show(const Worker* worker)
+{
+	printf("–¼‘OF%s", worker->name);
 }

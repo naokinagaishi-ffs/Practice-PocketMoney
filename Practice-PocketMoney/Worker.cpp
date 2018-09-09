@@ -5,10 +5,6 @@
 
 //コンストラクタ
 Worker::Worker() {};
-Worker::Worker(string name_) 
-{
-	Worker::SetName(name_);
-};
 
 //デストラクタ
 Worker::~Worker(){}

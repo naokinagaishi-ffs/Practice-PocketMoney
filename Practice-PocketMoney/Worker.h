@@ -8,13 +8,9 @@ class Worker
 {
 public:
 	Worker();				//コンストラクタ
-	Worker(string name_);	//コンストラクタ
 	~Worker();				//デストラクタ
 
-	string GetName() { return name; }
-	void  SetName(string name_) { name = name_; }
-
-private:
+public:
 	string name;
 
 };

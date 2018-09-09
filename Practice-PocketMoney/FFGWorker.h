@@ -12,12 +12,12 @@ public:
 	FFGWorker(string iD_, string name_);
 	~FFGWorker();
 
-	void Show();
+	//void Show();
 
-	string GetID() { return iD; }
-	void  SetID(string iD_) { iD = iD_; }
+	//string GetID() { return iD; }
+	//void  SetID(string iD_) { iD = iD_; }
 
-private:
+public:
 	string iD;
 };
 
