@@ -7,8 +7,9 @@ using namespace std;
 class Worker 
 {
 public:
-	Worker(string name_);//コンストラクタ
-	~Worker();			//デストラクタ
+	Worker();				//コンストラクタ
+	Worker(string name_);	//コンストラクタ
+	~Worker();				//デストラクタ
 
 	string GetName() { return name; }
 	void  SetName(string name_) { name = name_; }
