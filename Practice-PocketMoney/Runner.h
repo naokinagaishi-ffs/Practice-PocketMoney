@@ -17,7 +17,7 @@ public:
 	//ˆ—‚ÌÀs
 	void Run();
 	
-	void Show(const Worker* worker);
+	void Show(const Worker& worker);
 
 };
 #endif // !RUNNER_H

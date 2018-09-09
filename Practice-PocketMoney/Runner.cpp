@@ -15,11 +15,11 @@ void Runner::Run()
 {
 	FFGWorker a("abc","122");
 
-	Runner::Show(&a);
+	Runner::Show(a);
 	
 }
 
-void Runner::Show(const Worker* worker)
+void Runner::Show(const Worker& worker)
 {
-	printf("名前：%s", worker->name);
+	printf("名前：%s", worker.name);
 }
