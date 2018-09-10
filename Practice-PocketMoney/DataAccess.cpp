@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "DataAccess.h"
 #include "FFGWorker.h"
+#include <iostream>
 using namespace std;
 
 //コンストラクタ
@@ -12,15 +13,20 @@ DataAccess::DataAccess()
 	workerArray = NULL;
 }
 
-//デストラクタ
+////デストラクタ
 DataAccess::~DataAccess(){}
 
+
+//オブジェクトの配列を作るメソッド
 void DataAccess::CreatWorkerData()
 {
+	string filePath = "C:\\Users\\naoki\\Desktop\\FFS\\新人研修補講\\IO\\ioSampleData.txt";
+
 	try
 	{
 		//ファイルIO処理
-		ReadCSV("ファイルパスを入力");
+	
+		ReadCSV(&filePath);
 		
 	}
 	catch (exception ex)
@@ -31,18 +37,22 @@ void DataAccess::CreatWorkerData()
 	
 }
 
-void DataAccess::ReadCSV(string filepath)
+//CSVファイルを読むメソッド
+void DataAccess::ReadCSV(string* filePath)
 {
 	//仮実装
-	workerArray = new FFGWorker[1];
+	workerArray = new FFGWorker[2];//[1]で例外とぶのはなぜ？？
 	workerArray[0].name = "aaa";
 	workerArray[0].iD = "id01";
-	workerArray[0].name = "1000";
+	workerArray[0].pocketMoney = 1000;
 	workerArray[1].name = "bbb";
 	workerArray[1].iD = "id02";
-	workerArray[1].name = "4000";
+	workerArray[1].pocketMoney = 4000;
 
-	dataCount = sizeof(workerArray)/sizeof(workerArray[0]);
+	//dataCount = sizeof(workerArray)/sizeof(workerArray[0]);//上手く行かない
+	dataCount = 2;
+
+	//string a = *filePath;
 
 }
 

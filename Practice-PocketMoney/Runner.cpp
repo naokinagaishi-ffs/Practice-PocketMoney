@@ -3,6 +3,7 @@
 #include "Runner.h"
 #include "FFGWorker.h"
 #include "DataAccess.h"
+#include "Calculater.h"
 #include <iostream>
 using namespace std;
 
@@ -18,11 +19,22 @@ void Runner::Run()
 
 	//Runner::Show(a);
 
-	DataAccess dataAccesser;
-	dataAccesser.CreatWorkerData();
+	DataAccess data;
+
+	//Worker型のデータ配列を作成;
+	data.CreatWorkerData();
 	
-	//for (int i = 0; )
-	printf("データ数：", dataAccesser.dataCount);
+	int* pocketMoneyArray = NULL;
+	pocketMoneyArray = new int[data.dataCount ];
+	for (int i = 0; i < data.dataCount ; ++i)
+	{
+		int a = data.workerArray[i].pocketMoney;
+		pocketMoneyArray[i] = data.workerArray[i].pocketMoney;
+	}
+
+	printf("平均のお小遣いは %d 円。\n",CalcAverage(pocketMoneyArray));
+
+	//printf("データ数：%d", dataAccesser.dataCount);
 
 }
 

@@ -11,7 +11,7 @@
 
 	for (int i = 0; i < arrayCount; ++i)
 	{
-		dataSum = dataArray[i];
+		dataSum += dataArray[i];
 	}
 
 	return dataSum / arrayCount;

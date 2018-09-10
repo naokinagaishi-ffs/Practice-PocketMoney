@@ -3,6 +3,7 @@
 #define DATAACCESS
 
 #include "Worker.h"
+#include "FFGWorker.h"
 
 //データにアクセスするクラスの宣言
 
@@ -10,14 +11,14 @@ class DataAccess
 {
 public:
 	//コンストラクタ
-	DataAccess(){}
+	DataAccess() ;
 
 	//デストラクタ
-	~DataAccess(){}
+	~DataAccess();
 
 	//ファイルからデータを取得するメソッド
 	void CreatWorkerData();
-	void ReadCSV(string filepath);
+	void ReadCSV(string* filPpath);
 
 
 public:
