@@ -9,6 +9,7 @@ using namespace std;
 class FFGWorker :public Worker
 {
 public:
+	FFGWorker();
 	FFGWorker(string iD_, string name_);
 	~FFGWorker();
 
@@ -19,6 +20,7 @@ public:
 
 public:
 	string iD;
+	int pocketMoney;
 };
 
 #endif // !FFGWORKER_
