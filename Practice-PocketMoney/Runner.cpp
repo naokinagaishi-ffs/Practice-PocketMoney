@@ -22,7 +22,7 @@ void Runner::Run()
 	DataAccess data;
 
 	//Worker型のデータ配列を作成;
-	data.CreatWorkerData();
+	Worker* workerArray= data.CreatWorkerData();
 	
 	int* pocketMoneyArray = NULL;
 	pocketMoneyArray = new int[data.dataCount ];
@@ -32,7 +32,7 @@ void Runner::Run()
 		pocketMoneyArray[i] = data.workerArray[i].pocketMoney;
 	}
 
-	printf("平均のお小遣いは %d 円。\n",CalcAverage(pocketMoneyArray));
+	printf("平均のお小遣いは %d",CalcAverage(pocketMoneyArray));
 
 	//printf("データ数：%d", dataAccesser.dataCount);
 

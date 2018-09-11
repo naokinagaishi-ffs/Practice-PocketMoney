@@ -16,9 +16,11 @@ public:
 	//デストラクタ
 	~DataAccess();
 
+	//Worker型のデータ配列を作るメソッド
+	Worker* CreatWorkerData();
+
 	//ファイルからデータを取得するメソッド
-	void CreatWorkerData();
-	void ReadCSV(string* filPpath);
+	string* ReadCSV(string* filPpath);
 
 
 public:
