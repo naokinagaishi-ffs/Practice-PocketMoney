@@ -4,6 +4,7 @@
 
 #include "Worker.h"
 #include "FFGWorker.h"
+#include <vector>
 
 //データにアクセスするクラスの宣言
 
@@ -20,7 +21,7 @@ public:
 	Worker* CreatWorkerData();
 
 	//ファイルからデータを取得するメソッド
-	string* ReadCSV(string* filPpath);
+	vector<string> ReadCSV(string* filPpath);
 
 
 public:

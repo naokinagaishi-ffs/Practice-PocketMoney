@@ -22,16 +22,12 @@ DataAccess::~DataAccess(){}
 Worker* DataAccess::CreatWorkerData()
 {
 	string filePath = "C:\\Users\\naoki\\Desktop\\FFS\\新人研修補講\\IO\\ioSampleData.txt";
-
+	
+	vector<string> filedata = {""};//初期化
 	try
 	{
-		//ファイルIO処理
-		string* filedata = ReadCSV(&filePath);
-
-		//int workerNum = sizeof(filedata) / sizeof(filedata[0]);
-
-		string a = filedata[2];
-		
+		//ファイルIO処理。一行ずつ配列に保存
+		 filedata = ReadCSV(&filePath);
 	}
 	catch (exception ex)
 	{
@@ -39,13 +35,28 @@ Worker* DataAccess::CreatWorkerData()
 		//cout << "ファイル読み込み時に、例外発生しました" << endl;
 	}
 
+	vector<Worker> workerArray(filedata.size());
+	vector<string> dataElement(2);
+	
+	//split関数を作る
+	//for (int i = 0; i < filedata.size(); ++i)
+	//{
+	//	string tmp = NULL;
+	//	string tmp2 = filedata[i];
+	//	while (getline(tmp2,tmp,','))
+	//	{
+
+	//	}
+	//}
+
+
 	Worker* rmp = NULL;
 	return rmp;
 	
 }
 
 //CSVファイルを読むメソッド
-string* DataAccess::ReadCSV(string* filePath)
+vector<string> DataAccess::ReadCSV(string* filePath)
 {
 	//仮実装
 	//workerArray = new FFGWorker[2];//[1]で例外とぶのはなぜ？？
@@ -86,8 +97,10 @@ string* DataAccess::ReadCSV(string* filePath)
 	ifs.clear(); // ファイル末尾に到達というフラグをクリア
 	ifs.seekg(0, std::ios::beg);	// ファイル先頭に戻る
 
-	string* lineArray;
-	lineArray = new string[linenum];	// 行数 linenum 分の配列を動的に確保
+	//string* lineArray;
+	//lineArray = new string[linenum];	// 行数 linenum 分の配列を動的に確保
+
+	vector<string> lineArray(linenum);
 
 	for (int i = 0; i<linenum; i++) 
 	{

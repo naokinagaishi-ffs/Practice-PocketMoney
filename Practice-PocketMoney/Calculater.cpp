@@ -4,7 +4,7 @@
 
 
 //データの平均値を計算するメソッド
- int CalcAverage(int* dataArray)
+ int CalcAverage(int dataArray[])
 {
 	int arrayCount = sizeof(dataArray) / sizeof(dataArray[0]);
 	int dataSum = 0;

@@ -24,15 +24,14 @@ void Runner::Run()
 	//Worker型のデータ配列を作成;
 	Worker* workerArray= data.CreatWorkerData();
 	
-	int* pocketMoneyArray = NULL;
-	pocketMoneyArray = new int[data.dataCount ];
-	for (int i = 0; i < data.dataCount ; ++i)
+	vector<int> pocketMoneyArray (data.dataCount);
+
+	for (int i = 0; i < pocketMoneyArray.size() ; ++i)
 	{
-		int a = data.workerArray[i].pocketMoney;
 		pocketMoneyArray[i] = data.workerArray[i].pocketMoney;
 	}
 
-	printf("平均のお小遣いは %d",CalcAverage(pocketMoneyArray));
+	printf("平均のお小遣いは %d",CalcAverage(&pocketMoneyArray[0]));
 
 	//printf("データ数：%d", dataAccesser.dataCount);
 
