@@ -22,7 +22,7 @@ void Runner::Run()
 	DataAccess data;
 
 	//Worker型のデータ配列を作成;
-	Worker* workerArray= data.CreatWorkerData();
+	vector<FFGWorker> workerArray= data.CreatWorkerData();
 	
 	vector<int> pocketMoneyArray (data.dataCount);
 

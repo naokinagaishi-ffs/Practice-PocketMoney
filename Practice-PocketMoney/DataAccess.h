@@ -18,7 +18,7 @@ public:
 	~DataAccess();
 
 	//Worker型のデータ配列を作るメソッド
-	Worker* CreatWorkerData();
+    vector<FFGWorker> CreatWorkerData();
 
 	//ファイルからデータを取得するメソッド
 	vector<string> ReadCSV(string* filPpath);
