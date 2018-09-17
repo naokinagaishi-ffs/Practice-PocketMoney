@@ -1,13 +1,15 @@
+//
+//計算系の処理の関数の宣言
+//
 #pragma once
 #ifndef CALCULATER
 #define CALCULATER
 
-//Calculater インスタンス化する必要ないので、classいらない？？
-
-//配列のポインタを受け取る
- int CalcAverage(int dataArray[]);
-
-
+#include <vector>
+using namespace std;
+	
+	//配列のポインタを受けとり、平均値を計算
+	int CalcAverage(const vector<int>& dataArray);
 
 #endif // !CALCULATER
 

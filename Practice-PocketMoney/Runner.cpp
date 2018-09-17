@@ -15,29 +15,19 @@ Runner::~Runner() {  }
 
 void Runner::Run()
 {
-	//FFGWorker a("abc","122");
-
-	//Runner::Show(a);
 
 	DataAccess data;
 
 	//Worker型のデータ配列を作成;
 	vector<FFGWorker> workerArray= data.CreatWorkerData();
 	
-	vector<int> pocketMoneyArray (data.dataCount);
-
-	for (int i = 0; i < pocketMoneyArray.size() ; ++i)
+	vector<int> pocketMoneyArray (workerArray.size());
+	int a = pocketMoneyArray.size();
+	for (int i = 0; i < workerArray.size() ; ++i)
 	{
-		pocketMoneyArray[i] = data.workerArray[i].pocketMoney;
+		pocketMoneyArray[i] = workerArray[i].pocketMoney;
 	}
 
-	printf("平均のお小遣いは %d",CalcAverage(&pocketMoneyArray[0]));
+	printf("平均のお小遣いは %d円です\n",CalcAverage(pocketMoneyArray));
 
-	//printf("データ数：%d", dataAccesser.dataCount);
-
-}
-
-void Runner::Show(const Worker& worker)
-{
-	printf("名前：%s", worker.name.c_str());
 }

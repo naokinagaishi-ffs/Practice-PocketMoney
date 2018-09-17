@@ -5,9 +5,15 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
+#include <stdexcept>
+#include <Windows.h>
+#include <locale> 
+#include <codecvt> 
+#include <cstdio>
+
 
 using namespace std;
-
 
 
 //コンストラクタ
@@ -20,52 +26,69 @@ DataAccess::DataAccess()
 ////デストラクタ
 DataAccess::~DataAccess(){}
 
-
+//
 //オブジェクトの配列を作るメソッド
+//
 vector<FFGWorker> DataAccess::CreatWorkerData()
 {
-    string filePath = "C:\\お小遣い練習\\ioSampleData.txt";
+    //string dirPath = "C:\\お小遣い練習_";
+    string dirPath = "C:\\お小遣い練習";
 
-    vector<string> filedata = { "" };//初期化
+
+    //string dirPath = "C:\\test11";
+
+
+
+    vector<string> filePaths  ;//初期化
+    vector<string> fileData ;
     try
     {
-        //ファイルIO処理。一行ずつ配列に保存
-        filedata = ReadCSV(&filePath);
+        //フォルダ内の全てのtxtファイルのパスを取得
+        filePaths = SearchFiles(dirPath);
+
+        for (int i = 0; i < filePaths.size(); ++i)
+        {
+            //一行ずつ配列に保存
+            fileData = ReadCSV(&filePaths[i]);
+        }
+
     }
     catch (exception ex)
     {
         //ファイル読めなかった時の処理(想定できない例外)
         cout << "ファイル読み込み時に、例外発生しました" << endl;
-        //イベントログの出力
-
+        //TODO::イベントログテキストログの二つに出力
     }
 
     vector<FFGWorker> workerArray;
 
-    for (int i = 0; i < filedata.size(); ++i)
-    {
-        vector<string> data;
-        int p = 0;
-        while ((p = filedata[i].find(",")) != filedata[i].npos)
-        {
-            data.push_back(filedata[i].substr(0, p));//カンマ間をdataに格納
+    //for (int i = 0; i < filedata.size(); ++i)
+    //{
+    //    vector<string> data;
+    //    int p = 0;
+    //    while ((p = filedata[i].find(",")) != filedata[i].npos)
+    //    {
+    //        data.push_back(filedata[i].substr(0, p));//カンマ間をdataに格納
 
-            filedata[i] = filedata[i].substr(p + 1);//カンマを削る
-        }
+    //        filedata[i] = filedata[i].substr(p + 1);//カンマを削る
+    //    }
 
-        data.push_back(filedata[i]);
+    //    data.push_back(filedata[i]);
 
-        FFGWorker a;
-        a.iD = data[0];//ID
-        a.name = data[1];//名前
-        a.pocketMoney = atoi(data[2].c_str());//お金
+    //    FFGWorker tmpWorker ;
+    //    tmpWorker.iD = data[0];//ID
+    //    tmpWorker.name = data[1];//名前
+    //    tmpWorker.pocketMoney = atoi(data[2].c_str());//お金
 
-        workerArray.push_back(a);
-    }
+    //    workerArray.push_back(tmpWorker);
+    //}
 
     return workerArray;
 }
+
+//
 //CSVファイルを読むメソッド
+//
 vector<string> DataAccess::ReadCSV(string* filePath)
 {
 
@@ -104,3 +127,40 @@ vector<string> DataAccess::ReadCSV(string* filePath)
     return lineArray;
 }
 
+//
+//指定フォルダ内からtxtファイルを検索するメソッド
+//
+vector<string>DataAccess::SearchFiles(string& dirPath)
+{
+
+	HANDLE hFind;
+	WIN32_FIND_DATA win32fd;
+
+	vector<string> fileNames;   
+	string extention = "txt";
+     
+	string searchName = dirPath + "\\*." + extention;
+
+
+     hFind = FindFirstFile(searchName.c_str(), &win32fd);
+     
+     if (hFind == INVALID_HANDLE_VALUE)
+     {
+         //
+         cout << "フォルダまたは、ファイルが存在しません" << endl;
+     }
+     else
+     {
+         while (FindNextFile(hFind, &win32fd))
+         {
+             //fileNames.push_back(cv.to_bytes(win32fd.cFileName));
+             fileNames.push_back(dirPath + "\\"+ win32fd.cFileName);
+         }
+
+     }
+
+
+     FindClose(hFind);
+
+     return fileNames;
+}

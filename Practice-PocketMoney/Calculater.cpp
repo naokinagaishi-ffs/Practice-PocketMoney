@@ -1,12 +1,13 @@
-//calculaterクラスの実装
-#include "Calculater.h"
+//
+//計算の関数の実装
+//
 #include "stdafx.h"
+#include "Calculater.h"
 
-
-//データの平均値を計算するメソッド
- int CalcAverage(int dataArray[])
+//データの平均値を計算するメソッド。配列の先頭アドレスを受け取る
+ int CalcAverage(const vector<int>& dataArray)
 {
-	int arrayCount = sizeof(dataArray) / sizeof(dataArray[0]);
+	int arrayCount = dataArray.size();
 	int dataSum = 0;
 
 	for (int i = 0; i < arrayCount; ++i)
