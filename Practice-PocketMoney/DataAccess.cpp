@@ -100,7 +100,9 @@ vector<string> DataAccess::ReadCSV(string* filePath)
 
     if (ifs.fail()) {	// ファイルオープンに失敗したらそこで終了
         std::cerr << "ファイルを開けません\n";
-        exit(1);
+        
+        vector<string> empty(0); 
+        return empty; //警告だけ出して、空の配列を返す
     }
 
     string buf;	// データ一時保管用配列
@@ -110,10 +112,8 @@ vector<string> DataAccess::ReadCSV(string* filePath)
     // ファイルから1行ずつ読み込み、行数を求める
     while (getline(ifs, buf))
     {
-        linenum++;	// 行数をカウントしている
+        linenum++;	
     }
-
-    std::cerr << "読み込んだ行数 = " << linenum << "\n";
 
     ifs.clear(); // ファイル末尾に到達というフラグをクリア
     ifs.seekg(0, std::ios::beg);	// ファイル先頭に戻る
@@ -122,9 +122,7 @@ vector<string> DataAccess::ReadCSV(string* filePath)
 
     for (int i = 0; i < linenum; i++)
     {
-        
         getline(ifs, lineArray[i]);
-        
     }
 
     return lineArray;
