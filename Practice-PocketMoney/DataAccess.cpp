@@ -32,7 +32,7 @@ DataAccess::~DataAccess(){}
 vector<FFGWorker> DataAccess::CreatWorkerData()
 {
     //string dirPath = "C:\\お小遣い練習_";
-    string dirPath = "C:\\お小遣い練習";
+    string dirPath = "C:\\お小遣い練習_ShiftJis";
 
 
     //string dirPath = "C:\\test11";
@@ -46,12 +46,6 @@ vector<FFGWorker> DataAccess::CreatWorkerData()
         //フォルダ内の全てのtxtファイルのパスを取得
         filePaths = SearchFiles(dirPath);
 
-        for (int i = 0; i < filePaths.size(); ++i)
-        {
-            //一行ずつ配列に保存
-            fileData = ReadCSV(&filePaths[i]);
-        }
-
     }
     catch (exception ex)
     {
@@ -59,6 +53,15 @@ vector<FFGWorker> DataAccess::CreatWorkerData()
         cout << "ファイル読み込み時に、例外発生しました" << endl;
         //TODO::イベントログテキストログの二つに出力
     }
+
+
+    //一行ずつ配列に保存
+    for (int i = 0; i < filePaths.size(); ++i)
+    {
+        
+        fileData = ReadCSV(&filePaths[i]);
+    }
+
 
     vector<FFGWorker> workerArray;
 
@@ -146,19 +149,17 @@ vector<string>DataAccess::SearchFiles(string& dirPath)
      
      if (hFind == INVALID_HANDLE_VALUE)
      {
-         //
+         //ログだけ出力して、空の配列を返す
          cout << "フォルダまたは、ファイルが存在しません" << endl;
      }
      else
      {
-         while (FindNextFile(hFind, &win32fd))
+         do
          {
-             //fileNames.push_back(cv.to_bytes(win32fd.cFileName));
-             fileNames.push_back(dirPath + "\\"+ win32fd.cFileName);
-         }
+             fileNames.push_back(dirPath + "\\" + win32fd.cFileName);
 
+         } while (FindNextFile(hFind, &win32fd));
      }
-
 
      FindClose(hFind);
 
