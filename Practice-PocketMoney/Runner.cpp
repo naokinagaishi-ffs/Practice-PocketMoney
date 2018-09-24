@@ -19,13 +19,14 @@ void Runner::Run()
 	DataAccesser data;
 
 	//Worker型のデータ配列を作成;
-	vector<FFGWorker> workerArray= data.CreatWorkerDataArray();
+     vector<FFGWorker*> workerArray(NULL);
+     data.CreatWorkerDataArray(workerArray);
 	
 	vector<int> pocketMoneyArray (workerArray.size());
 	int a = pocketMoneyArray.size();
 	for (int i = 0; i < workerArray.size() ; ++i)
 	{
-		pocketMoneyArray[i] = workerArray[i].pocketMoney;
+		pocketMoneyArray[i] = workerArray[i]->pocketMoney;
 	}
 
 	printf("平均のお小遣いは %d円です\n",CalcAverage(pocketMoneyArray));

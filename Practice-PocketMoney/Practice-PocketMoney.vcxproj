@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Calculater.h" />
+    <ClInclude Include="CSVDataInfo.h" />
     <ClInclude Include="DataAccesser.h" />
     <ClInclude Include="FFGWorker.h" />
     <ClInclude Include="Runner.h" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Calculater.cpp" />
+    <ClCompile Include="CSVDataInfo.cpp" />
     <ClCompile Include="DataAccesseer.cpp" />
     <ClCompile Include="FFGWorker.cpp" />
     <ClCompile Include="Practice-PocketMoney.cpp" />

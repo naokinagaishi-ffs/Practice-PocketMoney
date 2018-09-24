@@ -11,7 +11,7 @@
 #include <locale> 
 #include <codecvt> 
 #include <cstdio>
-
+#include "CSVDataInfo.h"
 
 using namespace std;
 
@@ -37,11 +37,15 @@ DataAccesser::~DataAccesser()
 //
 //オブジェクトの配列を作るメソッド
 //
-vector<FFGWorker> DataAccesser::CreatWorkerDataArray()
+bool DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerArray)
 {
+    //返り値用の変数
+    bool resultJudge = true;
     
     //string dirPath = "C:\\お小遣い練習_ShiftJis_";//コマンドラインから入力するようにあとで変更
-    string dirPath = "C:\\お小遣い練習_ShiftJis";
+    //string dirPath = "C:\\お小遣い練習_ShiftJis";
+    string dirPath = "C:\\お小遣い練習_ShiftJis_";
+
 
     vector<string> filePaths(NULL);
 
@@ -53,72 +57,59 @@ vector<FFGWorker> DataAccesser::CreatWorkerDataArray()
 
         //フォルダ内の全てのtxtファイルのパスを取得
         filePaths = SearchFiles(dirPath);
-
-        cout << "フォルダ内にファイルが存在しません." << endl;
+        if (filePaths.empty())
+        {
+            cout << "フォルダ内にファイルが存在しません." << endl;
+            cout << "フォルダをもう一度入力してください" << endl;
+        }
     }
 
     vector<string> fileData(NULL);
     
-    ファイルごとにインスタンスを作成（メンバは行数と、一行ずつを格納したvector）
-    ファイルインスタンスから、Workerのインスタンスを作成
-
-
-
-
-
-
-    try
+    //ファイルインスタンスを作成し、vectorでハンドリング。
+    vector<CSVDataInfo*> CSVDataInfos(NULL);
+    if (filePaths.empty())
     {
-        //一行ずつ配列に保存
+        resultJudge = false;
+        
+    }
+    else
+    {
         for (int i = 0; i < filePaths.size(); ++i)
         {
-            fileData= ReadCSV(&filePaths[i]);
-
+            CSVDataInfo* tmp = CSVDataInfo::ReadCSV(&filePaths[i]);
+            CSVDataInfos.push_back(tmp);
         }
-
     }
-    catch (exception ex)
-    {
-        //CSVを読めなかった時の処理(想定できない例外)
-        cout << "ファイル読み込み時に、例外発生しました" << endl;
-        //TODO::イベントログテキストログの二つに出力
-    }
-
-
     
 
-    vector<FFGWorker> workerArray(NULL);
+    //TODO::ファイルインスタンスのメンバが正常かチェック。
+    //TODO::異常なファイルインスタンスは削除し、vectorのインデックスをいじる
 
 
-    return workerArray;
-}
-
-//
-//CSVファイルを読むメソッド。１要素に１行を格納したvectorを返す
-//
-vector<string> DataAccesser::ReadCSV(string* filePath)
-{
-    vector<string> lineArray(NULL);
-
-    std::ifstream ifs;  // ファイル読み取り用ストリーム
-    ifs.open(*filePath);	// ファイルオープン
-
-    if (ifs.fail()) 
+    //正常なファイルインスタンスからのみWorkerデータを作成
+    for (int i = 0; i < CSVDataInfos.size(); ++i)
     {
-        // ファイルオープンに失敗したらそこで終了
-        cout << "ファイルを開けません" << endl;
-        
-        return lineArray; //警告だけ出して、NULLの配列を返す
+        //FFGWorker tmp = CreatFFGWorker()
+        //workerArray.push_back()
+
+        int lineNum = CSVDataInfos[i]->lines.size();
+        for (int j = 0; j < lineNum; ++j)
+        {
+            //vector<string> tmp = CSVDataInfos[i]->lines;
+            ////tmp[j]
+            //workerArray.push_back(CreatFFGWorker(tmp[j]));
+
+            workerArray.push_back((CreatFFGWorker(CSVDataInfos[i]->lines)));
+
+        }
+       
     }
 
-    while (!ifs.eof())
-    {
-        string tmpStr ;
-        getline(ifs, tmpStr);
-        lineArray.push_back(tmpStr.c_str());
-    }
-    return lineArray;
+
+    return resultJudge;
 }
+
 
 //
 //指定フォルダ内からtxtファイルを検索するメソッド。１要素に１ファイルのパスを含む
@@ -159,10 +150,9 @@ vector<string>DataAccesser::SearchFiles(string& dirPath)
 //
 //dataからFFGWorker1人分のインスタンスを作成するメソッド
 //
-bool DataAccesser:: CreatFFGWorker(vector<string> strWorkerInfo, 
-                                   FFGWorker* worker)
+FFGWorker* DataAccesser:: CreatFFGWorker(vector<string> strWorkerInfo)
 {
-    
+    workerArray_ = new FFGWorker[strWorkerInfo.size()];
     vector<string> data(NULL);
     for (int i = 0; i < strWorkerInfo.size(); i++)
     {
@@ -178,10 +168,10 @@ bool DataAccesser:: CreatFFGWorker(vector<string> strWorkerInfo,
 
     }
 
-    worker->iD          = data[0];
-    worker->name        = data[1];
-    worker->pocketMoney = atoi(data[2].c_str());
+    workerArray_->iD          = data[0];
+    workerArray_->name        = data[1];
+    workerArray_->pocketMoney = atoi(data[2].c_str());
 
-    return worker;
+    return workerArray_;
 
 }

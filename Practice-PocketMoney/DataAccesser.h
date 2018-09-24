@@ -30,20 +30,21 @@ public:
      //
      //Worker型のデータ配列を作るメソッド
      //
-     vector<FFGWorker> CreatWorkerDataArray();
+     bool CreatWorkerDataArray(vector<FFGWorker*> workerArray);
 
 #pragma endregion
 
 #pragma region private メソッド
 private:
-    //ファイルからデータを取得するメソッド
-    vector<string> ReadCSV(string* filPpath);
-
-    //指定フォルダ内の.txtファイルを検索するクラス
+    //
+    //指定フォルダ内の.txtファイルを検索するメソッド
+    //
     vector<string> SearchFiles(string& dirPath);
 
-    //vector<string> => vector<FFGWorker>
-    bool CreatFFGWorker(vector<string> strWorkerInfo, FFGWorker* worker);
+    //
+    //文字列からFFGWorkerのインスタンスを作成するメソッド
+    //
+    FFGWorker*  CreatFFGWorker(vector<string> strWorkerInfo);
 #pragma endregion
 
 
