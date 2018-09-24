@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "Runner.h"
 #include "FFGWorker.h"
-#include "DataAccess.h"
+#include "DataAccesser.h"
 #include "Calculater.h"
 #include <iostream>
 using namespace std;
@@ -16,10 +16,10 @@ Runner::~Runner() {  }
 void Runner::Run()
 {
 
-	DataAccess data;
+	DataAccesser data;
 
 	//Worker型のデータ配列を作成;
-	vector<FFGWorker> workerArray= data.CreatWorkerData();
+	vector<FFGWorker> workerArray= data.CreatWorkerDataArray();
 	
 	vector<int> pocketMoneyArray (workerArray.size());
 	int a = pocketMoneyArray.size();

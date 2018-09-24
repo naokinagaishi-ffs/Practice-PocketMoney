@@ -33,7 +33,7 @@
     <ClInclude Include="Worker.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DataAccess.h">
+    <ClInclude Include="DataAccesser.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,7 +56,7 @@
     <ClCompile Include="Calculater.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DataAccess.cpp">
+    <ClCompile Include="DataAccesseer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
