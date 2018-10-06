@@ -76,8 +76,7 @@ vector<FFGWorker*> DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerA
     {
         for (int i = 0; i < filePaths.size(); ++i)
         {
-            CSVDataInfo* tmp = CSVDataInfo::ReadCSV(&filePaths[i]);
-            csvDataInfos.push_back(tmp);
+            csvDataInfos.push_back(CSVDataInfo::ReadCSV(&filePaths[i]));
         }
     }
     
@@ -92,23 +91,13 @@ vector<FFGWorker*> DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerA
         vector<string> tmpData = csvDataInfos[i]->lines;
 
         int lineNum = tmpData.size();
-        for (int j = 0; j < lineNum - 1; ++j)
+        for (int j = 0; j < lineNum ; ++j)
         {
             
             workerArray.push_back((CreatFFGWorker(tmpData[j])));
 
         }
        
-    }
-    
-    //csvDataInsos‚ÉŠi”[‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚ð‰ð•ú
-    for (unsigned int i = 0; i < csvDataInfos.size(); ++i)
-    {
-        if (csvDataInfos[i] != NULL)
-        {
-            delete csvDataInfos[i];
-            csvDataInfos[i] = NULL;
-        }
     }
 
     return workerArray;
