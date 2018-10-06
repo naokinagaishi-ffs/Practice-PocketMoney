@@ -24,8 +24,13 @@ CSVDataInfo::CSVDataInfo(string filePath, vector<string> lines)
 //デストラクタ
 CSVDataInfo::~CSVDataInfo()
 {
-    delete []dataInfo;
-    dataInfo = NULL;
+    for (unsigned int i = 0; i < this->lines.size(); ++i)
+    {
+        if (NULL != this->lines[i].c_str())
+        {
+            lines[i].c_str() == NULL;
+        }
+    }
 }
 
 CSVDataInfo* CSVDataInfo::ReadCSV(string* filePath)
@@ -35,23 +40,22 @@ CSVDataInfo* CSVDataInfo::ReadCSV(string* filePath)
     std::ifstream ifs;  // ファイル読み取り用ストリーム
     ifs.open(*filePath);	// ファイルオープン
 
-    
+
     if (ifs.fail())
     {
         // ファイルオープンに失敗したらそこで終了
         cout << "ファイルを開けません" << endl;
 
-        //return lineArray; //警告だけ出して、NULLの配列を返す
+        //return lineArray; //警告だけ出して、空の配列を返す
     }
 
     while (!ifs.eof())
     {
-        string tmpStr;
-        getline(ifs, tmpStr);
-        lineArray.push_back(tmpStr.c_str());
+        string* tmpStr = new string[30];
+        getline(ifs, *tmpStr);
+        lineArray.push_back(*tmpStr);
     }
 
-    CSVDataInfo* dataInfo = new CSVDataInfo(*filePath, lineArray);
+    return  new CSVDataInfo(*filePath, lineArray);
 
-        return dataInfo;
 }

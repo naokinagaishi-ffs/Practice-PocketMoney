@@ -30,7 +30,7 @@ public:
      //
      //Worker型のデータ配列を作るメソッド
      //
-     bool CreatWorkerDataArray(vector<FFGWorker*> workerArray);
+     vector<FFGWorker*>  CreatWorkerDataArray(vector<FFGWorker*> workerArray);
 
 #pragma endregion
 
@@ -44,7 +44,13 @@ private:
     //
     //文字列からFFGWorkerのインスタンスを作成するメソッド
     //
-    FFGWorker*  CreatFFGWorker(vector<string> strWorkerInfo);
+    FFGWorker*  CreatFFGWorker(string strWorkerInfo);
+
+    //
+    //
+    //
+    vector<string> Split(const std::string& input, char delimiter);
+
 #pragma endregion
 
 

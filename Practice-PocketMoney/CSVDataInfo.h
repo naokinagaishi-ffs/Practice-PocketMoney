@@ -21,7 +21,7 @@ public:
     //メンバ
     vector<string> lines;
     string fileName;
-    CSVDataInfo* dataInfo;
+    //CSVDataInfo* dataInfo;
 
     //int lineNum;
     //ファイルからデータを取得するメソッド

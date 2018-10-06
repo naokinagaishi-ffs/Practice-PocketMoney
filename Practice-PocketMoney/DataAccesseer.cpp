@@ -36,11 +36,10 @@ DataAccesser::~DataAccesser()
 
 //
 //オブジェクトの配列を作るメソッド
-//
-bool DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerArray)
+vector<FFGWorker*> DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerArray)
 {
     //返り値用の変数
-    bool resultJudge = true;
+    bool result = true;
     
     //string dirPath = "C:\\お小遣い練習_ShiftJis_";//コマンドラインから入力するようにあとで変更
     //string dirPath = "C:\\お小遣い練習_ShiftJis";
@@ -67,10 +66,10 @@ bool DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerArray)
     vector<string> fileData(NULL);
     
     //ファイルインスタンスを作成し、vectorでハンドリング。
-    vector<CSVDataInfo*> CSVDataInfos(NULL);
+    vector<CSVDataInfo*> csvDataInfos(NULL);
     if (filePaths.empty())
     {
-        resultJudge = false;
+        result = false;
         
     }
     else
@@ -78,7 +77,7 @@ bool DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerArray)
         for (int i = 0; i < filePaths.size(); ++i)
         {
             CSVDataInfo* tmp = CSVDataInfo::ReadCSV(&filePaths[i]);
-            CSVDataInfos.push_back(tmp);
+            csvDataInfos.push_back(tmp);
         }
     }
     
@@ -88,26 +87,31 @@ bool DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerArray)
 
 
     //正常なファイルインスタンスからのみWorkerデータを作成
-    for (int i = 0; i < CSVDataInfos.size(); ++i)
+    for (int i = 0; i < csvDataInfos.size(); ++i)
     {
-        //FFGWorker tmp = CreatFFGWorker()
-        //workerArray.push_back()
+        vector<string> tmpData = csvDataInfos[i]->lines;
 
-        int lineNum = CSVDataInfos[i]->lines.size();
-        for (int j = 0; j < lineNum; ++j)
+        int lineNum = tmpData.size();
+        for (int j = 0; j < lineNum - 1; ++j)
         {
-            //vector<string> tmp = CSVDataInfos[i]->lines;
-            ////tmp[j]
-            //workerArray.push_back(CreatFFGWorker(tmp[j]));
-
-            workerArray.push_back((CreatFFGWorker(CSVDataInfos[i]->lines)));
+            
+            workerArray.push_back((CreatFFGWorker(tmpData[j])));
 
         }
        
     }
+    
+    //csvDataInsosに格納されているデータを解放
+    for (unsigned int i = 0; i < csvDataInfos.size(); ++i)
+    {
+        if (csvDataInfos[i] != NULL)
+        {
+            delete csvDataInfos[i];
+            csvDataInfos[i] = NULL;
+        }
+    }
 
-
-    return resultJudge;
+    return workerArray;
 }
 
 
@@ -150,23 +154,11 @@ vector<string>DataAccesser::SearchFiles(string& dirPath)
 //
 //dataからFFGWorker1人分のインスタンスを作成するメソッド
 //
-FFGWorker* DataAccesser:: CreatFFGWorker(vector<string> strWorkerInfo)
+FFGWorker* DataAccesser:: CreatFFGWorker(string strWorkerInfo)
 {
     workerArray_ = new FFGWorker[strWorkerInfo.size()];
     vector<string> data(NULL);
-    for (int i = 0; i < strWorkerInfo.size(); i++)
-    {
-        int p = 0;
-        while ((p = strWorkerInfo[i].find(",")) != strWorkerInfo[i].npos)
-        {
-            data.push_back(strWorkerInfo[i].substr(0, p));//カンマ間をdataに格納
-
-            strWorkerInfo[i] = strWorkerInfo[i].substr(p + 1);//カンマを削る
-        }
-
-        data.push_back(strWorkerInfo[i]);
-
-    }
+    data = Split(strWorkerInfo,',');
 
     workerArray_->iD          = data[0];
     workerArray_->name        = data[1];
@@ -174,4 +166,16 @@ FFGWorker* DataAccesser:: CreatFFGWorker(vector<string> strWorkerInfo)
 
     return workerArray_;
 
+}
+
+vector<string> DataAccesser::Split(const string& input, char delimiter)
+{
+    istringstream stream(input);
+
+    string field;
+    vector<string> result;
+    while (getline(stream, field, delimiter)) {
+        result.push_back(field);
+    }
+    return result;
 }
