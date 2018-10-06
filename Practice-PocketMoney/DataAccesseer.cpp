@@ -11,7 +11,10 @@
 #include <locale> 
 #include <codecvt> 
 #include <cstdio>
+#include <cctype>
+#include <algorithm>
 #include "CSVDataInfo.h"
+#include "ErrorManager.h"
 
 using namespace std;
 
@@ -38,66 +41,52 @@ DataAccesser::~DataAccesser()
 //オブジェクトの配列を作るメソッド
 vector<FFGWorker*> DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerArray)
 {
-    //返り値用の変数
-    bool result = true;
-    
     //string dirPath = "C:\\お小遣い練習_ShiftJis_";//コマンドラインから入力するようにあとで変更
-    //string dirPath = "C:\\お小遣い練習_ShiftJis";
-    string dirPath = "C:\\お小遣い練習_ShiftJis_";
+    string dirPath = "C:\\お小遣い練習_ShiftJis";
+    //string dirPath = "C:\\お小遣練習_ShiftJis_";
 
 
     vector<string> filePaths(NULL);
+    //cout << "フォルダパスを入力してください" << endl; 
+    //cin >> dirPath ;
 
-    //vectorのfilePathsにパスが入るまでwhile分を抜けない
-    while (filePaths.empty())
-    {
-        //cout << "フォルダパスを入力してください" << endl; 
-        //cin >> dirPath ;
-
-        //フォルダ内の全てのtxtファイルのパスを取得
-        filePaths = SearchFiles(dirPath);
-        if (filePaths.empty())
-        {
-            cout << "フォルダ内にファイルが存在しません." << endl;
-            cout << "フォルダをもう一度入力してください" << endl;
-        }
-    }
-
-    vector<string> fileData(NULL);
-    
-    //ファイルインスタンスを作成し、vectorでハンドリング。
-    vector<CSVDataInfo*> csvDataInfos(NULL);
+    //フォルダ内の全てのtxtファイルのパスを取得
+    filePaths = SearchFiles(dirPath);
     if (filePaths.empty())
     {
-        result = false;
-        
+        string mesg = "フォルダまたはファイルが存在しません.\n";
+        cout << mesg;
+        ErrorManager::WriteErrotTxt(mesg);
+        return vector<FFGWorker*>();
     }
-    else
+
+
+    //ファイルインスタンスを作成し、vectorでハンドリング。
+    vector<CSVDataInfo*> csvDataInfos(NULL);
+    for (int i = 0; i < filePaths.size(); ++i)
     {
-        for (int i = 0; i < filePaths.size(); ++i)
-        {
-            csvDataInfos.push_back(CSVDataInfo::ReadCSV(&filePaths[i]));
-        }
+        csvDataInfos.push_back(CSVDataInfo::ReadCSV(&filePaths[i]));
     }
-    
-
-    //TODO::ファイルインスタンスのメンバが正常かチェック。
-    //TODO::異常なファイルインスタンスは削除し、vectorのインデックスをいじる
-
 
     //正常なファイルインスタンスからのみWorkerデータを作成
     for (int i = 0; i < csvDataInfos.size(); ++i)
     {
-        vector<string> tmpData = csvDataInfos[i]->lines;
-
-        int lineNum = tmpData.size();
-        for (int j = 0; j < lineNum ; ++j)
+        vector<string> tmpLines = csvDataInfos[i]->lines;
+        if (CheckOneLine(tmpLines))
         {
-            
-            workerArray.push_back((CreatFFGWorker(tmpData[j])));
-
+            int lineNum = tmpLines.size();
+            for (int j = 0; j < lineNum; ++j)
+            {
+                workerArray.push_back((CreatFFGWorker(tmpLines[j])));
+            }
         }
-       
+        else
+        {
+            string mesg = csvDataInfos[i]->fileName + "が不正なファイルです\n";
+            cout << mesg << endl;
+            ErrorManager::WriteErrotTxt(mesg);
+        }
+
     }
 
     return workerArray;
@@ -113,7 +102,7 @@ vector<string>DataAccesser::SearchFiles(string& dirPath)
 	HANDLE hFind;
 	WIN32_FIND_DATA win32fd;
 
-	vector<string> fileNames;   
+	vector<string> fileNames(NULL);   
 	string extention = "txt";
      
 	string searchName = dirPath + "\\*." + extention;
@@ -123,8 +112,7 @@ vector<string>DataAccesser::SearchFiles(string& dirPath)
      
      if (hFind == INVALID_HANDLE_VALUE)
      {
-         //ログだけ出力して、空の配列を返す
-         cout << "フォルダまたは、ファイルが存在しません" << endl;
+         //ファイルパスがない場合は、何も処理しない。
      }
      else
      {
@@ -143,20 +131,22 @@ vector<string>DataAccesser::SearchFiles(string& dirPath)
 //
 //dataからFFGWorker1人分のインスタンスを作成するメソッド
 //
-FFGWorker* DataAccesser:: CreatFFGWorker(string strWorkerInfo)
+FFGWorker* DataAccesser::CreatFFGWorker(string strWorkerInfo)
 {
-    workerArray_ = new FFGWorker[strWorkerInfo.size()];
     vector<string> data(NULL);
-    data = Split(strWorkerInfo,',');
-
-    workerArray_->iD          = data[0];
-    workerArray_->name        = data[1];
+    data = Split(strWorkerInfo, ',');
+    workerArray_->iD = data[0];
+    workerArray_->name = data[1];
     workerArray_->pocketMoney = atoi(data[2].c_str());
 
     return workerArray_;
 
 }
 
+
+//
+//delimeter区切りで、文字列をvectorに保存して返すメソッド
+//
 vector<string> DataAccesser::Split(const string& input, char delimiter)
 {
     istringstream stream(input);
@@ -168,3 +158,52 @@ vector<string> DataAccesser::Split(const string& input, char delimiter)
     }
     return result;
 }
+
+//
+//ファイル一行分のチェックを行うメソッド
+//
+bool DataAccesser::CheckOneLine(vector<string> lines)
+{
+    const int ELEMENTNUMBER = 3;
+    string mesg = "";
+
+    for (int i = 0; i < lines.size(); ++i)
+    {
+        vector<string> oneLine = Split(lines[i], ',');
+
+        //要素数のチェック
+        if (oneLine.size() != ELEMENTNUMBER)
+        {
+            mesg = "データのフィールド数が不正です。";
+            cout << mesg << endl;
+            ErrorManager::WriteErrotTxt(mesg);
+            return false;
+        }
+
+        //データ内に欠損があるかのチェック
+        for (int j = 0; j < ELEMENTNUMBER; ++j)
+        {
+            if (oneLine[j].empty())
+            {
+                mesg = "データ中に空のフィールド数があります。";
+                cout << mesg ;
+                ErrorManager::WriteErrotTxt(mesg);
+                return false;
+            }
+        }
+
+        //数値変換できるかのチェック
+        //if (!all_of(oneLine[2].cbegin(), oneLine[2].cend(), isdigit))
+        //{
+        //    mesg = "お金を数値に変換できません。";
+        //    cout << mesg ;
+        //    ErrorManager::WriteErrotTxt(mesg);
+        //    return false;
+
+        //}
+
+    }
+
+    return true;
+}
+

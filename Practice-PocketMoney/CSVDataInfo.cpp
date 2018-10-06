@@ -7,15 +7,21 @@
 #include <fstream>
 #include <sstream>
 #include "CSVDataInfo.h"
+#include "ErrorManager.h"
 
 
+//
 //コンストラクタ
+//
 CSVDataInfo:: CSVDataInfo()
 {
     this->lines.clear();
     this->lines.resize(0);
 }
+
+//
 //コンストラクタ
+//
 CSVDataInfo::CSVDataInfo(string filePath, vector<string> lines) 
 {
     this->fileName = filePath;
@@ -26,7 +32,9 @@ CSVDataInfo::CSVDataInfo(string filePath, vector<string> lines)
     }
 }
 
+//
 //デストラクタ
+//
 CSVDataInfo::~CSVDataInfo()
 {
     
@@ -40,6 +48,9 @@ CSVDataInfo::~CSVDataInfo()
     }
 }
 
+//
+//ファイルパスからインスタンスを生成して返すメソッド
+//
 CSVDataInfo* CSVDataInfo::ReadCSV(string* filePath)
 {
     vector<string> lineArray(NULL);
@@ -50,25 +61,25 @@ CSVDataInfo* CSVDataInfo::ReadCSV(string* filePath)
 
     if (ifs.fail())
     {
-        // ファイルオープンに失敗したらそこで終了
-        cout << "ファイルを開けません" << endl;
-
-        //return lineArray; //警告だけ出して、空の配列を返す
+        string mesg =  "ファイルを開けません。　";
+        mesg += filePath->c_str();
+        cout << mesg << endl;
+        ErrorManager::WriteErrotTxt(mesg);
+        return false;
     }
 
     //一行ずつlineArrayに格納し、最終行まで読み込む。
     while (!ifs.eof())
     {
-        string* tmpStr = new string[30];
+        string* tmpStr = new string[100];
         getline(ifs, *tmpStr);
-
         if (!tmpStr->empty())
         {
             lineArray.push_back(*tmpStr);
         }
-
     }
 
     return  new CSVDataInfo(*filePath, lineArray);
 
 }
+

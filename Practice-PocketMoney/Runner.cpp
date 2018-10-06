@@ -4,6 +4,7 @@
 #include "FFGWorker.h"
 #include "DataAccesser.h"
 #include "Calculater.h"
+#include "ErrorManager.h"
 #include <iostream>
 using namespace std;
 
@@ -16,6 +17,7 @@ Runner::~Runner() {  }
 void Runner::Run()
 {
 
+     ErrorManager::CreatLogFile();
 	DataAccesser data;
 
 	//Worker型のデータ配列を作成;

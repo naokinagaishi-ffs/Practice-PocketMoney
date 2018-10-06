@@ -32,7 +32,9 @@ public:
     vector<string> lines;
     string fileName;
 
-    //ファイルからデータを取得するメソッド
+    //
+    //ファイルパスからインスタンスを生成して返すメソッド
+    //
     static CSVDataInfo* ReadCSV(string* filPpath);
 
 };

@@ -47,9 +47,15 @@ private:
     FFGWorker*  CreatFFGWorker(string strWorkerInfo);
 
     //
-    //
+    //delimeter区切りで、文字列をvectorに保存して返すメソッド
     //
     vector<string> Split(const std::string& input, char delimiter);
+
+    //
+    //ファイル一行分のチェックを行うメソッド
+    //
+    bool CheckOneLine(vector<string> lineData);
+
 
 #pragma endregion
 
@@ -72,8 +78,6 @@ public:
     FFGWorker* WorekrArray() { return workerArray_; }
 
 #pragma endregion
-
-
 
 };
 #endif // !DATAACCESS
