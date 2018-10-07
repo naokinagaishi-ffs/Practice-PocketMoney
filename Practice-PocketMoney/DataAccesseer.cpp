@@ -40,9 +40,9 @@ DataAccesser::~DataAccesser()
 //オブジェクトの配列を作るメソッド
 vector<FFGWorker*> DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerArray)
 {
-    //string dirPath = "C:\\お小遣い練習_ShiftJis_";//コマンドラインから入力するようにあとで変更
+    //string dirPath = "C:\\お小遣い練習_ShiftJis_数値";//コマンドラインから入力するようにあとで変更
     //string dirPath = "C:\\お小遣い練習_ShiftJis";
-    string dirPath = "C:\\お小遣い練習_ShiftJis_";
+    string dirPath = "C:\\pocketMoney";
 
 
     vector<string> filePaths(NULL);
@@ -128,17 +128,23 @@ vector<string>DataAccesser::SearchFiles(string& dirPath)
 }
 
 //
-//dataからFFGWorker1人分のインスタンスを作成するメソッド
+//FFGWorker1人分のインスタンスを作成するメソッド
 //
 FFGWorker* DataAccesser::CreatFFGWorker(string strWorkerInfo)
 {
+    workerArray_ = new FFGWorker[strWorkerInfo.size()];
     vector<string> data(NULL);
     data = Split(strWorkerInfo, ',');
+    if (!CheckOneLine(data))
+    {
+        return NULL;
+    }
     try
     {
         workerArray_->iD = data[0];
         workerArray_->name = data[1];
         workerArray_->pocketMoney = atoi(data[2].c_str());
+        
 
     }
     catch (...)
@@ -169,17 +175,13 @@ vector<string> DataAccesser::Split(const string& input, char delimiter)
 //
 //ファイル一行分のチェックを行うメソッド
 //
-bool DataAccesser::CheckOneLine(vector<string> lines)
+bool DataAccesser::CheckOneLine(vector<string> line)
 {
     const int ELEMENTNUMBER = 3;
     string mesg = "";
 
-    for (int i = 0; i < lines.size(); ++i)
-    {
-        vector<string> oneLine = Split(lines[i], ',');
-
         //要素数のチェック
-        if (oneLine.size() != ELEMENTNUMBER)
+        if (line.size() != ELEMENTNUMBER)
         {
             mesg = "データのフィールド数が不正です。";
             cout << mesg << endl;
@@ -190,7 +192,7 @@ bool DataAccesser::CheckOneLine(vector<string> lines)
         //データ内に欠損があるかのチェック
         for (int j = 0; j < ELEMENTNUMBER; ++j)
         {
-            if (oneLine[j].empty())
+            if (line[j].empty())
             {
                 mesg = "データ中に空のフィールド数があります。";
                 cout << mesg;
@@ -199,8 +201,10 @@ bool DataAccesser::CheckOneLine(vector<string> lines)
             }
         }
 
-        //数値変換できるかのチェック
-        if (!all_of(oneLine[2].cbegin(), oneLine[2].cend(), isdigit))
+        ////数値変換できるかのチェック
+        string tmp = line[2];
+        
+        if (!all_of(tmp.cbegin(), tmp.cend(), isdigit))
         {
             mesg = "お金を数値に変換できません。";
             cout << mesg;
@@ -208,7 +212,7 @@ bool DataAccesser::CheckOneLine(vector<string> lines)
             return false;
 
         }
-    }
+    
 
 
     return true;
