@@ -15,7 +15,6 @@
 #include <algorithm>
 #include "CSVDataInfo.h"
 #include "ErrorManager.h"
-
 using namespace std;
 
 //
@@ -42,8 +41,8 @@ DataAccesser::~DataAccesser()
 vector<FFGWorker*> DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerArray)
 {
     //string dirPath = "C:\\お小遣い練習_ShiftJis_";//コマンドラインから入力するようにあとで変更
-    string dirPath = "C:\\お小遣い練習_ShiftJis";
-    //string dirPath = "C:\\お小遣練習_ShiftJis_";
+    //string dirPath = "C:\\お小遣い練習_ShiftJis";
+    string dirPath = "C:\\お小遣い練習_ShiftJis_";
 
 
     vector<string> filePaths(NULL);
@@ -55,9 +54,9 @@ vector<FFGWorker*> DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerA
     if (filePaths.empty())
     {
         string mesg = "フォルダまたはファイルが存在しません.\n";
-        cout << mesg;
+        std::cout << mesg;
         ErrorManager::WriteErrotTxt(mesg);
-        return vector<FFGWorker*>();
+        return vector<FFGWorker*>(NULL);
     }
 
 
@@ -68,27 +67,27 @@ vector<FFGWorker*> DataAccesser::CreatWorkerDataArray(vector<FFGWorker*> workerA
         csvDataInfos.push_back(CSVDataInfo::ReadCSV(&filePaths[i]));
     }
 
-    //正常なファイルインスタンスからのみWorkerデータを作成
+    //FFGWorkerのインスタンスを生成
     for (int i = 0; i < csvDataInfos.size(); ++i)
     {
-        vector<string> tmpLines = csvDataInfos[i]->lines;
-        if (CheckOneLine(tmpLines))
+        vector<string> fileLines = csvDataInfos[i]->lines;
+        for (int j = 0; j < fileLines.size(); ++j)
         {
-            int lineNum = tmpLines.size();
-            for (int j = 0; j < lineNum; ++j)
+            FFGWorker* tmpWorker = CreatFFGWorker(fileLines[j]);
+            if (tmpWorker != NULL)
             {
-                workerArray.push_back((CreatFFGWorker(tmpLines[j])));
+                workerArray.push_back(tmpWorker);
             }
-        }
-        else
-        {
-            string mesg = csvDataInfos[i]->fileName + "が不正なファイルです\n";
-            cout << mesg << endl;
-            ErrorManager::WriteErrotTxt(mesg);
+            else
+            {
+                string mesg = csvDataInfos[i]->fileName + "が不正なファイルです\n";
+                cout << mesg << endl;
+                ErrorManager::WriteErrotTxt(mesg);
+            }
+
         }
 
     }
-
     return workerArray;
 }
 
@@ -135,9 +134,17 @@ FFGWorker* DataAccesser::CreatFFGWorker(string strWorkerInfo)
 {
     vector<string> data(NULL);
     data = Split(strWorkerInfo, ',');
-    workerArray_->iD = data[0];
-    workerArray_->name = data[1];
-    workerArray_->pocketMoney = atoi(data[2].c_str());
+    try
+    {
+        workerArray_->iD = data[0];
+        workerArray_->name = data[1];
+        workerArray_->pocketMoney = atoi(data[2].c_str());
+
+    }
+    catch (...)
+    {
+        return NULL;
+    }
 
     return workerArray_;
 
