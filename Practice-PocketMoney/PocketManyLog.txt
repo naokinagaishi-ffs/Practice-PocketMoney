@@ -1,0 +1,2 @@
+データのフィールド数が不正です。データを除外しました。不正データを含むファイルはC:\pocketMoney\ioSampleData_データが少ない.txt　です
+お金を数値に変換できません。データを除外しました。不正データを含むファイルはC:\pocketMoney\ioSampleData_数値変換できない.txt　です
