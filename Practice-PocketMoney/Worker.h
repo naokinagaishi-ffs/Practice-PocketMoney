@@ -7,8 +7,8 @@ using namespace std;
 class Worker 
 {
 public:
-	Worker();				//コンストラクタ
-	~Worker();				//デストラクタ
+	Worker();				
+	~Worker();				
 
 public:
 	string name;

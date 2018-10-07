@@ -24,12 +24,12 @@ ErrorManager::~ErrorManager()
 //
 void ErrorManager::WriteErrotTxt(string mesg)
 {
-
     fstream file(LOGFILEPATH, ios_base::app);
-    file << mesg.c_str();//なぜCloseいらない？？
+    file << mesg.c_str();
+    file.close();
 }
 //
-//ファイルを生成するクラス。作成する場所はCドライブ直下。
+//ファイルを生成するクラス。
 //
 void ErrorManager::CreatLogFile()
 {

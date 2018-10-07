@@ -150,8 +150,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Calculater.h" />
+    <ClInclude Include="CSVAccesser.h" />
     <ClInclude Include="CSVDataInfo.h" />
-    <ClInclude Include="DataAccesser.h" />
+    <ClInclude Include="WorkerCreater.h" />
     <ClInclude Include="ErrorManager.h" />
     <ClInclude Include="FFGWorker.h" />
     <ClInclude Include="Runner.h" />
@@ -161,11 +162,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Calculater.cpp" />
+    <ClCompile Include="CSVAccesser.cpp" />
     <ClCompile Include="CSVDataInfo.cpp" />
-    <ClCompile Include="DataAccesseer.cpp" />
+    <ClCompile Include="WorkerCreater.cpp" />
     <ClCompile Include="ErrorManager.cpp" />
     <ClCompile Include="FFGWorker.cpp" />
-    <ClCompile Include="Practice-PocketMoney.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Runner.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

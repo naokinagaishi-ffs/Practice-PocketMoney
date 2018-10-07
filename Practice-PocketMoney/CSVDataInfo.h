@@ -18,7 +18,6 @@ public:
     //
     //コンストラクタ
     //
-    CSVDataInfo();
     CSVDataInfo(string filePath, vector<string> lines);
 
     //
@@ -32,10 +31,6 @@ public:
     vector<string> lines;
     string fileName;
 
-    //
-    //ファイルパスからインスタンスを生成して返すメソッド
-    //
-    static CSVDataInfo* ReadCSV(string* filPpath);
 
 };
 

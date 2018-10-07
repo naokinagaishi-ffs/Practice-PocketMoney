@@ -3,28 +3,26 @@
 //データアクセスに関する処理はこのクラスの責務
 //
 #pragma once
-#ifndef DATAACCESSER
-#define DATAACCESSER
+#ifndef WORKERCREATER_
+#define WORKERCREATER_
 
 #include "Worker.h"
 #include "FFGWorker.h"
 #include <vector>
 
-
-
-class DataAccesser
+class WorkerCreater
 {
 public:
      //
 	//コンストラクタ
      //
-	DataAccesser() ;
+    WorkerCreater() ;
 
 
      //
 	//デストラクタ
      //
-	~DataAccesser();
+	~WorkerCreater();
 
 #pragma region publicメソッド
      //
@@ -80,4 +78,4 @@ public:
 #pragma endregion
 
 };
-#endif // !DATAACCESS
+#endif // !WORKERCREATER_
