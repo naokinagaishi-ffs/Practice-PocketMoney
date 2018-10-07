@@ -186,23 +186,23 @@ bool DataAccesser::CheckOneLine(vector<string> lines)
             if (oneLine[j].empty())
             {
                 mesg = "データ中に空のフィールド数があります。";
-                cout << mesg ;
+                cout << mesg;
                 ErrorManager::WriteErrotTxt(mesg);
                 return false;
             }
         }
 
         //数値変換できるかのチェック
-        //if (!all_of(oneLine[2].cbegin(), oneLine[2].cend(), isdigit))
-        //{
-        //    mesg = "お金を数値に変換できません。";
-        //    cout << mesg ;
-        //    ErrorManager::WriteErrotTxt(mesg);
-        //    return false;
+        if (!all_of(oneLine[2].cbegin(), oneLine[2].cend(), isdigit))
+        {
+            mesg = "お金を数値に変換できません。";
+            cout << mesg;
+            ErrorManager::WriteErrotTxt(mesg);
+            return false;
 
-        //}
-
+        }
     }
+
 
     return true;
 }
