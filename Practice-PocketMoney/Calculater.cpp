@@ -6,8 +6,24 @@
 #include <iostream>
 using namespace std;
 
+//
+//コンストラクタ
+//
+Calculater::Calculater()
+{
+}
+
+//
+//デストラクタ
+//
+Calculater::~Calculater()
+{
+}
+
+//
 //データの平均値を計算するメソッド。配列の先頭アドレスを受け取る
- int CalcAverage(const vector<int>& dataArray)
+// 
+int Calculater::CalcAverage(const vector<int>& dataArray)
 {
 	int arrayCount = dataArray.size();
 	
