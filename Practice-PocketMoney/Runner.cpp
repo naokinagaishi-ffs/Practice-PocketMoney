@@ -37,7 +37,7 @@ void Runner::Run()
              moneyArray[i] = workerArray[i]->pocketMoney;
          }
 
-         printf("ïΩãœÇÃÇ®è¨å≠Ç¢ÇÕ %dâ~Ç≈Ç∑\n", CalcAverage(moneyArray));
+         printf("ïΩãœÇÃÇ®è¨å≠Ç¢ÇÕ %dâ~Ç≈Ç∑\n", Calculater::CalcAverage(moneyArray));
 
      }
 
